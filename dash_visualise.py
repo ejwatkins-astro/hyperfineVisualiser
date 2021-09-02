@@ -456,7 +456,7 @@ class Visualiser:
             [Input('3d-scatter-plot', 'hoverData'),
              Input('velo-comp-checkbox', 'value')]
             )
-        def update_spectrum(hoverData, velo_checklist, clickData):
+        def update_spectrum(hoverData, velo_checklist):
             """
             Updates the spectrum being shown
 
@@ -467,8 +467,6 @@ class Visualiser:
                 hovered data from the 3d plot.
             velo_checklist : list of str
                 List containing which velocity components will be shown.
-            clickData : dict
-                Positional information of the clicked data from the 2d map.
 
             Returns
             -------
