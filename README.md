@@ -12,9 +12,9 @@ Set your file paths:
     Get the actual data cube to look at the actual spectrum. Call it `data_3d_path`
 
 Chuck these into the classes:
->>> data_obj = get_data.Mutlicomponent : component_filename
->>> data_2d_obj = get_data.Data_2d : ['file1', 'file2', 'file3'], ['label1', 'label2', 'label3']
->>> real_data_obj =  get_data.Data_3d
+> data_obj = get_data.Mutlicomponent : component_filename
+> data_2d_obj = get_data.Data_2d : ['file1', 'file2', 'file3'], ['label1', 'label2', 'label3']
+> real_data_obj =  get_data.Data_3d
 
 Chuck classes into visualiser and run
 vis = dash_visualise.Visualiser(data_obj, data_2d_obj, real_data_obj)
@@ -31,29 +31,27 @@ Should either be stored as a cube, where the z direction is the component number
 and y,x are the positions, or can be stored as a dictionary with labels:
     `some_string_%d` where %d is an interger representing the component number
 
-
-
 If loading from a saved dictionary, the key/label must be given in the format
 `some_string_%d`. For example (using the class method load.data):
 
 data_obj = get_data.Mutlicomponent.load_data(
-    filename=component_filename,
-    header=header, #provide header if given file has no header info
-    maximum_components=7, #optional
-    key_prefix=velocity_%d,
-    no_data_value=np.nan #optional
-    )
+filename=component_filename,
+header=header, #provide header if given file has no header info
+maximum_components=7, #optional
+key_prefix=velocity_%d,
+no_data_value=np.nan #optional
+)
 
 Can also load in yourself and just provide the cube directly to component class
 
 component_filename = path_to_data
 
 data_obj = get_data.Mutlicomponent(
-    component_cube=some_component_cube,
-    header=header,
-    maximum_components=max_components,
-    no_data_value=np.nan
-    )
+component_cube=some_component_cube,
+header=header,
+maximum_components=max_components,
+no_data_value=np.nan
+)
 
 ---------------------------------------------------------------------
 
@@ -73,10 +71,10 @@ data_2d_paths= [filepath_with_header, file_is_dict]
 data_2d_labels = ['Mom0', 'a_dict_key']
 
 data_2d_obj = get_data.Data_2d(
-    filenames=data_2d_paths,
-    labels=data_2d_labels,
-    header=None, #optional, but must be given if files have no headers
-    reproject_all=True
+filenames=data_2d_paths,
+labels=data_2d_labels,
+header=None, #optional, but must be given if files have no headers
+reproject_all=True
 )
 
 get_data.Data_2d has to be initalised using files. This makes adding maps
@@ -111,28 +109,28 @@ Example as cube:
 datacube, header = load in
 
 real_data_obj = get_data.Data_3d(
-    data_cube=datacube,
-    header=header,
-    model_data_cubes=None,
-    data_is_freq=False,
-    rest_freq=None,
-    model_labels=['fit', 'lower', 'upper'],
-    in_kelvin=True, #True if in Kelvin, False if in Jy/beam
-    model_in_kelvin=True
+data_cube=datacube,
+header=header,
+model_data_cubes=None,
+data_is_freq=False,
+rest_freq=None,
+model_labels=['fit', 'lower', 'upper'],
+in_kelvin=True, #True if in Kelvin, False if in Jy/beam
+model_in_kelvin=True
 )
 
 To show the fitted model cube, either give a file name if loading from
 `cls.load_data` or give the cube in a simular way as for the data_cube. Example:
 
 real_data_obj = get_data.Data_3d.load_data(
-    cube_filename=data_3d_path,
-    model_cube_filename=data_3d_fit_upper_lower_path,
-    header=None,
-    data_is_freq=False,
-    rest_freq=None,
-    model_labels=['fit', 'lower', 'upper'],
-    in_kelvin=False
-    model_in_kelvin=False
+cube_filename=data_3d_path,
+model_cube_filename=data_3d_fit_upper_lower_path,
+header=None,
+data_is_freq=False,
+rest_freq=None,
+model_labels=['fit', 'lower', 'upper'],
+in_kelvin=False
+model_in_kelvin=False
 )
 
 Setting `in_kelvin` and `model_in_kelvin` means the data is in Jy/beam 
@@ -143,13 +141,13 @@ or give a single file with a 4d hyper cube, or list the filenames for
 the three model fits. Example of from file:
 
 real_data_obj = get_data.Data_3d.load_data(
-    cube_filename=data_3d_path,
-    model_cube_filename=[model_filepath, lower_filepath, upper_filepath]
-    header=None,
-    data_is_freq=False,
-    rest_freq=None,
-    model_labels=['fit', 'lower', 'upper'], #change the order here to match your data 
-    in_kelvin=False
+cube_filename=data_3d_path,
+model_cube_filename=[model_filepath, lower_filepath, upper_filepath]
+header=None,
+data_is_freq=False,
+rest_freq=None,
+model_labels=['fit', 'lower', 'upper'], #change the order here to match your data 
+in_kelvin=False
 )
 
 If the data is in frequency, `set data_is_freq` to True to convert to velocity.
@@ -179,11 +177,11 @@ if you want this to show on the plot, you have to set it up yourself
 for the visualiser and enter it using the variable `single_fits`.
 
 vis = dash_visualise.Visualiser(
-    data_obj=data_obj,
-    data_2d_obj=data_2d_obj,
-    real_data_obj=real_data_obj,
-    single_fits = single_fits,
-    zlims=None #will default to the max velocitties when inialising
+data_obj=data_obj,
+data_2d_obj=data_2d_obj,
+real_data_obj=real_data_obj,
+single_fits = single_fits,
+zlims=None #will default to the max velocitties when inialising
 )
 
 run the visuliser: copy the address printed into the url. Works with chrome. Hope it
