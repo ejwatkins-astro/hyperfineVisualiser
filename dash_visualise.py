@@ -454,8 +454,7 @@ class Visualiser:
         @app.callback(
             Output('spectrum', 'figure'),
             [Input('3d-scatter-plot', 'hoverData'),
-             Input('velo-comp-checkbox', 'value')#,
-             #Input('2d-data', 'clickData')]
+             Input('velo-comp-checkbox', 'value')]
             )
         def update_spectrum(hoverData, velo_checklist, clickData):
             """
