@@ -4,7 +4,7 @@
 For options and help,on the functions and classes enter help(class_name) 
 or help(function_name) for further documentation.
 
-<h2>TLDR 2</h2>
+<h2>TLDR</h2>
 Open up example_tempate.py <br />
 Set your file paths between the equal signs <br />
     Get file containing velocity peak per component. Will plot in 3d. Call it 'component_filename' <br />
