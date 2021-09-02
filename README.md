@@ -4,9 +4,9 @@
 For options and help,on the functions and classes enter help(class_name) 
 or help(function_name) for further documentation.
 
-TLDR
-Open up example_tempate.py
-Set your file paths:
+<h2>TLDR 2</h2>
+Open up example_tempate.py <br />
+Set your file paths between the equal signs <br />
     Get file containing velocity peak per component. Will plot in 3d. Call it 'component_filename' <br />
     Get some 2d maps to look at a map. Call it data_2d_paths=['file1', 'file2', 'file3' .. etc] and label them data_2d_labels=['label1', 'label2', 'label3'] <br />
     Get the actual data cube to look at the actual spectrum. Call it `data_3d_path` <br />
