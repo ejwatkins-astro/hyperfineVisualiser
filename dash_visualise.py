@@ -491,7 +491,7 @@ class Visualiser:
 
             number_components = self.ncomp_2d[y_index, x_index]
 
-            title = 'x: %d</b>y: %d</b>Components: %d' % (x_index, y_index, number_components)#'<b>{}</b><br>{}'.format(x_index, y_index)
+            title = 'x: %d<br>y: %d<br>Components: %d' % (x_index, y_index, number_components)#'<b>{}</b><br>{}'.format(x_index, y_index)
 
             return self.create_spectrum(spetra_values, title, single_plot_param)
 
