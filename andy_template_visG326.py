@@ -81,7 +81,7 @@ fit_lower_upper = get_data.all_fit_param_cubes(component_filename, ['sigma_%d', 
 
 # weird fit : y=378, x=487
 
-initalise the visualiser parameters
+#initalise the visualiser parameters
 print('Initalising visualiser')
 vis = dash_visualise.Visualiser(
     data_obj=data_obj,
