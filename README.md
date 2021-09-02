@@ -51,7 +51,7 @@ component_filename = path_to_data
 > header=header, <br />
 > maximum_components=max_components, <br />
 > no_data_value=np.nan <br />
->>> )
+> )
 
 ---------------------------------------------------------------------
 
