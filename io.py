@@ -22,16 +22,6 @@ class Loader:
     the dictonary `file_types`. The lazy loader will always output
     the data and a `header`. If no `header` was given or found, the `header`
     will be returned as a `None`
-
-
-preping parameters outputted in an n-component hyperfine
-    fitter for 3d plotting. Can take in a cube containing the positions
-    and velocities, with the third dimension represent each component,
-    can accept a fits file with this same structure, or can accept a
-
-
-    What it so that
-
     """
     def __init__(self, filename, **file_args):
 
