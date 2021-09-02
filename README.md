@@ -34,12 +34,12 @@ and y,x are the positions, or can be stored as a dictionary with labels:
 If loading from a saved dictionary, the key/label must be given in the format
 `some_string_%d`. For example (using the class method load.data):
 
->>> data_obj = get_data.Mutlicomponent.load_data(
->>> filename=component_filename,
->>> header=header, #provide header if given file has no header info
->>> maximum_components=7, #optional
->>> key_prefix=velocity_%d,
->>> no_data_value=np.nan #optional
+>>> data_obj = get_data.Mutlicomponent.load_data( \\
+>>> filename=component_filename, \\
+>>> header=header, #provide header if needed \\
+>>> maximum_components=7, #optional \\
+>>> key_prefix=velocity_%d, \\
+>>> no_data_value=np.nan #optional \\
 >>> )
 
 Can also load in yourself and just provide the cube directly to component class
