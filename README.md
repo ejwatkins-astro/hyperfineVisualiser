@@ -2,7 +2,18 @@
 
 
 For options and help,on the functions and classes enter help(class_name) 
-or help(function_name) for further documentation.
+or help(function_name) for further documentation. <br />
+Required packages: <br />
+* dash
+* plotly
+* numpy
+* reproject
+* astropy
+* pandas
+* pickle
+* json
+
+NB, I use every option. I have not tested if code/visualiser works if some optional settings are not used.
 
 <h2>TLDR</h2>
 Open up example_tempate.py <br />
