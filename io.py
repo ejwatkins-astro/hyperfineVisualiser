@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug 31 09:51:51 2021
-
-@author: Liz_J
+Script for loading in data saved in a few different formats
 """
 
 import json
