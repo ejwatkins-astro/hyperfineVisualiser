@@ -21,6 +21,8 @@ from . import config
 from . import conversion_utilities as util
 from . import make_maps
 
+
+
 # Dictionary for modifying how the spectrum plots
 spectrum_params = {
     'data':{
@@ -56,11 +58,12 @@ class Visualiser:
     """
     Visualiser for fitted velocity data.
     """
-    def __init__(self, data_obj, data_2d_obj, real_data_obj, single_fits=None, zlims=None):
+    def __init__(self, data_obj, data_2d_obj, real_data_obj, single_fits=None, zlims=None, inital_view_spectrum=None):
 
         self.data_obj = data_obj
         self.data_2d_obj = data_2d_obj
         self.single_fits = single_fits
+        self.inital_view_spectrum = inital_view_spectrum
 
         #2d map showing the number of components fitted per pixel
         self.ncomp_2d = self.data_obj.get_flat2d_component_map()
@@ -165,7 +168,7 @@ class Visualiser:
 
         return [rand_x, rand_y]
 
-    def create_spectrum(self, spectra_dict, title, single_plot_param=None):
+    def create_spectrum(self, spectra_dict, title, single_plot_param=None, single_comp_specta=None):
         """
         Creates each spectrum to be plotted
 
@@ -195,7 +198,7 @@ class Visualiser:
                 y=spectra_dict[key],
                 hoverinfo='none',
                 **single_plot_param[key]
-            ) for key in single_plot_param.keys()]
+            ) for key in single_comp_specta.keys()]
 
             scs = flatten_list([scs, scs1])
 
@@ -217,6 +220,7 @@ class Visualiser:
                            text=title)
 
         # fig.update_layout(height=300, margin={'l': 20, 'b': 30, 'r': 10, 't': 10})
+        # fig.show() config={'toImageButtonOptions': {'width': None,'height': None}}
 
         return fig
 
@@ -231,8 +235,10 @@ class Visualiser:
             The Webapp.
 
         """
-
-        rand_xy = self.get_random_coords()
+        if self.inital_view_spectrum is None:
+            rand_xy = self.get_random_coords()
+        else:
+            rand_xy = self.inital_view_spectrum
 
         app = dash.Dash(__name__)
 
@@ -247,6 +253,7 @@ class Visualiser:
                         options=[{'label': i, 'value': str(i)} for i in range(1, self.data_obj.maximum_components+1)],
                         value=['1']
                     ),
+
                     html.Label('Coordinates'),
                     dcc.RadioItems(
                         id='coord-chooser',
@@ -254,10 +261,13 @@ class Visualiser:
                         value=self.world_coord_type,
                         labelStyle={'display': 'inline-block', 'marginTop': '5px'}
                     ),
+
                     html.Label('Velocity range'),
                     dcc.RangeSlider(
+                        allowCross=False,
                         **self.get_velo_slider_values()
                     ),
+
                     html.Label('Plot transparency'),
                     dcc.Input(
                         id='transparency',
@@ -274,10 +284,11 @@ class Visualiser:
                         id='2d-data_selector',
                         options=[{'label': i, 'value': i} for i in self.available_maps],
                         value=self.available_maps[0],
-                        # style={"margin-top": "-150px"}
                     ),
+
                     html.Label('Colour range'),
-                    dcc.RangeSlider(**self.get_colour_slider_values()
+                    dcc.RangeSlider(allowCross=False,
+                                    **self.get_colour_slider_values()
                     ),
 
                     dcc.RadioItems(
@@ -294,7 +305,13 @@ class Visualiser:
                 dcc.Graph(
                     id='3d-scatter-plot',
                     hoverData={'points':[{'customdata': rand_xy}]},
-                    clickData={'points':[{'customdata': rand_xy}]}#{'points':[{'x':rand_x, 'y':rand_y}]}
+                    clickData={'points':[{'customdata': rand_xy}]},
+                    config={
+                        'toImageButtonOptions':{
+                            'filename':'3d-scatter',
+                            'scale':10
+                            }
+                        }
                 )
             ], style={'width': '49%', 'display': 'inline-block', 'padding': '0 20'}),
 
@@ -304,7 +321,14 @@ class Visualiser:
                     hoverData={'points':[{'customdata': rand_xy}]},
                     clickData={'points':[{'customdata': rand_xy}]}),
 
-                dcc.Graph(id='spectrum')
+                dcc.Graph(id='spectrum',
+                          config={
+                              'toImageButtonOptions':{
+                                  'filename':'spectrum',
+                                  'scale':10
+                                  }
+                              }
+                          )
 
             ], style={'display': 'inline-block', 'float':'right', 'width': '49%'})
         ])
@@ -378,8 +402,11 @@ class Visualiser:
             fig.update_yaxes(matches=None)
             fig.update_xaxes(matches=None)
 
-            fig.update_layout(transition_duration=500, margin={'l': 40, 'b': 40, 't': 10, 'r': 0}, hovermode='closest',
-                              yaxis=dict(scaleanchor='x'))
+            fig.update_layout(margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+                              hovermode='closest',
+                              yaxis=dict(scaleanchor='x'),
+                              scene=dict(zaxis=dict(range=zlims))
+                              ) # transition_duration=500,
 
             fig['layout']['uirevision'] = world_system
 
@@ -482,7 +509,7 @@ class Visualiser:
                 spetra_values[key] = self.all_data_3d[key][:, y_index, x_index]
 
             if self.single_fits is not None:
-                single_comp_specta = single_lower_upper = get_model_for_each_found_component(self.real_data_obj.all_data_3d['velocity'], self.single_fits, y_index, x_index)
+                single_comp_specta = get_model_for_each_found_component(self.real_data_obj.all_data_3d['velocity'], self.single_fits, y_index, x_index)
                 single_plot_param = get_single_model_spectrum_params(velo_checklist, self.data_obj.maximum_components)
 
                 spetra_values = {**spetra_values, **single_comp_specta}
@@ -491,9 +518,9 @@ class Visualiser:
 
             number_components = self.ncomp_2d[y_index, x_index]
 
-            title = 'x: %d<br>y: %d<br>Components: %d' % (x_index, y_index, number_components)#'<b>{}</b><br>{}'.format(x_index, y_index)
+            title = 'x: %d<br>y: %d<br>Components: %d' % (x_index, y_index, number_components)
 
-            return self.create_spectrum(spetra_values, title, single_plot_param)
+            return self.create_spectrum(spetra_values, title, single_plot_param, single_comp_specta)
 
         @app.callback(
             [Output(component_id='2d-colour-range', component_property='min'),
@@ -701,7 +728,7 @@ def data_zoom(clickData, data_2d, zoom=75):
     """
     From a clicked position in the three scatter plot, zooms the
     2d image to that location
-    TODO: Mess function, neaten up at some point
+    TODO: Messy function, neaten up at some point
 
     Parameters
     ----------

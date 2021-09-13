@@ -635,7 +635,9 @@ def all_fit_param_cubes(dict_of_maps, key_prefixes, err_suffix=None, max_comp=No
         if err_suffix is not None:
             lower = cube - make_cube_from_dict_maps(dict_of_maps, key+err_suffix[0], max_comp)
             upper = cube + make_cube_from_dict_maps(dict_of_maps, key+err_suffix[1], max_comp)
-        fit_parma_cubes[key[:-3]] = np.array([cube, lower, upper])
+            fit_parma_cubes[key[:-3]] = np.array([cube, lower, upper])
+        else:
+            fit_parma_cubes[key[:-3]] = np.array([cube])
 
     return fit_parma_cubes
 

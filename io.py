@@ -22,6 +22,7 @@ class Loader:
     the dictonary `file_types`. The lazy loader will always output
     the data and a `header`. If no `header` was given or found, the `header`
     will be returned as a `None`
+
     """
     def __init__(self, filename, **file_args):
 
